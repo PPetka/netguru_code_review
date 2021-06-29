@@ -18,7 +18,7 @@ import com.netguru.codereview.shoplist.R
 import com.netguru.codereview.ui.model.ShopList
 import javax.inject.Inject
 
-class MainFragment : Fragment() {
+class ShoppingFragment : Fragment() {
 
     @Inject
     private var viewModel: MainViewModel? = null
