@@ -21,7 +21,7 @@ import javax.inject.Inject
 class ShoppingFragment : Fragment() {
 
     @Inject
-    private var viewModel: MainViewModel? = null
+    private var viewModel: ShoppingViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +31,7 @@ class ShoppingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ShoppingViewModel::class.java)
 
         viewModel!!.shopLists.observe(this, { lists ->
             val progressBar = view.findViewById<ProgressBar>(R.id.message)

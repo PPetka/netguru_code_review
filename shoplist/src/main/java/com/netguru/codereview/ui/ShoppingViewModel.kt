@@ -12,7 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class ShoppingViewModel : ViewModel() {
 
     private val shopListRepository = ShopListRepository(ShopListApiMock())
 
