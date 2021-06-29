@@ -6,6 +6,6 @@ class ShopList(
     val id: String,
     val userId: Int,
     val listName: String,
-    val iconUrl: String,
+    val iconUrl: String?,
     val items: List<ShopListItemResponse>
 )

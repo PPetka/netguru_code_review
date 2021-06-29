@@ -47,7 +47,7 @@ class ShoppingViewModel : ViewModel() {
             list.list_id,
             list.userId,
             list.listName,
-            list.listName,
+            null, //todo find a place from which we can fetch it
             items
         )
 }
