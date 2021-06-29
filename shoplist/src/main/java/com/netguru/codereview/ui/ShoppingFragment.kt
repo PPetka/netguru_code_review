@@ -18,16 +18,10 @@ import com.netguru.codereview.shoplist.R
 import com.netguru.codereview.ui.model.ShopList
 import javax.inject.Inject
 
-class ShoppingFragment : Fragment() {
+class ShoppingFragment : Fragment(R.layout.main_fragment) {
 
     @Inject
     private var viewModel: ShoppingViewModel? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View =
-        layoutInflater.inflate(R.layout.main_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
