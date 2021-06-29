@@ -31,7 +31,7 @@ class ShoppingFragment : Fragment(R.layout.main_fragment) {
             val progressBar = view.findViewById<ProgressBar>(R.id.message)
             val latestIcon = view.findViewById<ImageView>(R.id.latest_list_icon)
 
-            val shopLists = lists.map { mapShopList(it.first, it.second) }.also {
+            val shopLists = lists.also {
                 latestIcon?.load(it.first().iconUrl)
             }
 
@@ -47,13 +47,4 @@ class ShoppingFragment : Fragment(R.layout.main_fragment) {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
     }
-
-    private fun mapShopList(list: ShopListResponse, items: List<ShopListItemResponse>) =
-        ShopList(
-            list.list_id,
-            list.userId,
-            list.listName,
-            list.listName,
-            items
-        )
 }

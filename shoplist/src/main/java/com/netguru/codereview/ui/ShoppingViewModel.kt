@@ -8,6 +8,7 @@ import com.netguru.codereview.network.ShopListApiMock
 import com.netguru.codereview.network.ShopListRepository
 import com.netguru.codereview.network.model.ShopListItemResponse
 import com.netguru.codereview.network.model.ShopListResponse
+import com.netguru.codereview.ui.model.ShopList
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ class ShoppingViewModel : ViewModel() {
 
     private val shopListRepository = ShopListRepository(ShopListApiMock())
 
-    val shopLists = MutableLiveData<List<Pair<ShopListResponse, List<ShopListItemResponse>>>>()
+    val shopLists = MutableLiveData<List<ShopList>>()
     private val eventLiveData = MutableLiveData<String>()
 
     init {
@@ -27,7 +28,7 @@ class ShoppingViewModel : ViewModel() {
                 val items = shopListRepository.getShopListItems(list.list_id)
                 data.add(list to items)
             }
-            shopLists.postValue(data)
+            shopLists.postValue(data.map { mapShopList(it.first, it.second) })
         }
         getUpdateEvents()
     }
@@ -40,4 +41,13 @@ class ShoppingViewModel : ViewModel() {
             }
         }
     }
+
+    private fun mapShopList(list: ShopListResponse, items: List<ShopListItemResponse>) =
+        ShopList(
+            list.list_id,
+            list.userId,
+            list.listName,
+            list.listName,
+            items
+        )
 }
