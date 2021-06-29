@@ -2,20 +2,17 @@ package com.netguru.codereview.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
+import kotlinx.coroutines.flow.collect
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import coil.load
-import com.netguru.codereview.network.model.ShopListItemResponse
-import com.netguru.codereview.network.model.ShopListResponse
 import com.netguru.codereview.shoplist.R
-import com.netguru.codereview.ui.model.ShopList
 import javax.inject.Inject
 
 class ShoppingFragment : Fragment(R.layout.main_fragment) {
@@ -39,12 +36,17 @@ class ShoppingFragment : Fragment(R.layout.main_fragment) {
 
             Log.i("LOGTAG", "LOLOLOL Is it done already?")
 
-
             // Display the list in recyclerview
             // adapter.submitList(shopLists)
         })
-        viewModel!!.events().observe(this, {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel!!.getUpdateEvents().collect(::displayUpdateEvent)
+        }
+    }
+
+    private fun displayUpdateEvent(message : String){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
+
