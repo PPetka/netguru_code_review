@@ -23,30 +23,37 @@ class ShoppingFragment : Fragment(R.layout.main_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(ShoppingViewModel::class.java)
+        val progressBar = view.findViewById<ProgressBar>(R.id.message)
+        val latestIcon = view.findViewById<ImageView>(R.id.latest_list_icon)
 
-        viewModel!!.shopLists.observe(this, { lists ->
-            val progressBar = view.findViewById<ProgressBar>(R.id.message)
-            val latestIcon = view.findViewById<ImageView>(R.id.latest_list_icon)
+        fun render(shoppingState: ShoppingViewModel.ShoppingState) {
+            Log.e("ShoppingFragment", "shoppinng state $shoppingState")
 
-            val shopLists = lists.also {
-                latestIcon?.load(it.first().iconUrl)
+            progressBar?.isVisible = shoppingState is ShoppingViewModel.ShoppingState.Loading
+            when (shoppingState) {
+                is ShoppingViewModel.ShoppingState.Success -> {
+                    shoppingState.lists.also {
+                        latestIcon?.load(it.last().iconUrl)
+                    }
+                }
+                is ShoppingViewModel.ShoppingState.Error -> {
+                    Log.e("ShoppingFragment", "ex ${shoppingState.exception}")
+                }
+                else -> { }
             }
+        }
 
-            progressBar?.isVisible = false
-
-            Log.i("LOGTAG", "LOLOLOL Is it done already?")
-
-            // Display the list in recyclerview
-            // adapter.submitList(shopLists)
-        })
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel!!.getShoppinngListData().collect(::render)
+        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel!!.getUpdateEvents().collect(::displayUpdateEvent)
         }
+        viewModel!!.fetchShoppings( )
     }
 
-    private fun displayUpdateEvent(message : String){
+    private fun displayUpdateEvent(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
-
